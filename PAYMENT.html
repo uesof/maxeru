@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طرق الدفع</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(270deg, #3498db, #2ecc71, #9b59b6);
+            background-size: 600% 600%;
+            animation: backgroundAnimation 10s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Cairo', sans-serif;
+            color: #ffffff;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        @keyframes backgroundAnimation {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-bottom: 2px solid white;
+        }
+
+        #logo {
+            width: 120px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            background-color: #3498db;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .header-link:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .content {
+            text-align: center;
+            animation: fadeIn 2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 640px;
+        }
+
+        h1 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 2.5em;
+            animation: fadeIn 2s ease;
+            color: #ffeb3b;
+            margin-bottom: 16px;
+        }
+
+        p {
+            font-size: 1.2em;
+            font-family: 'Cairo', sans-serif;
+            animation: fadeIn 2s ease;
+            color: #ffeb3b;
+            margin-bottom: 16px;
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            animation: fadeIn 2s ease;
+            margin-bottom: 16px;
+        }
+
+        .payment-method {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .payment-method:hover {
+            background-color: #f1f1f1;
+            transform: translateY(-2px);
+        }
+
+        .back-button {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #c0392b;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <img id="logo" src="C:/Users/youss/OneDrive/Desktop/WEB1/445.png" alt="445">
+    <div class="header-links">
+        <a class="header-link" href="file:///C:/Users/youss/OneDrive/Desktop/WEB1/page10.HTML">ازاي اطلب صيانه؟</a>
+        <a class="header-link gray-link" href="file:///C:/Users/youss/OneDrive/Desktop/WEB1/page11.HTML">كيف نتعامل معك؟</a>
+    </div>
+</div>
+
+<div class="content">
+    <h1>طرق الدفع</h1>
+    <p>اختر طريقة الدفع التي تناسبك من بين الخيارات التالية:</p>
+    <div class="payment-methods">
+        <div class="payment-method">الدفع النقدي عند الاستلام</div>
+        <div class="payment-method">الدفع ببطاقة الائتمان</div>
+        <div class="payment-method">الدفع عبر الإنترنت</div>
+        <div class="payment-method">الدفع عبر التحويل البنكي</div>
+    </div>
+    <div class="back-button" onclick="goBack()">العودة</div>
+</div>
+
+<script>
+    function goBack() {
+        window.location.href = 'PAGE1.html';
+    }
+</script>
+
+</body>
+</html>

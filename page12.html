@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معلوماتي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #3498db, #2ecc71, #9b59b6);
+            background-size: 600% 600%;
+            animation: gradientAnimation 10s ease infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+        @keyframes gradientAnimation {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+        #logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: auto;
+        }
+        #back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #back-arrow:hover {
+            background-color: #c0392b;
+        }
+        #content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            color: black;
+            animation: slideDown 1s ease;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #bdc3c7;
+            color: #7f8c8d;
+            cursor: not-allowed;
+        }
+        .btn-primary.enabled {
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+        }
+        .btn-primary.enabled:hover {
+            background-color: #2980b9;
+        }
+        .btn-secondary {
+            background-color: #e74c3c;
+        }
+        .btn-secondary:hover {
+            background-color: #c0392b;
+        }
+        #error-message {
+            color: red;
+            margin-bottom: 20px;
+        }
+        #success-message {
+            color: green;
+            margin-bottom: 20px;
+        }
+        /* النافذة المنبثقة */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 10px;
+            color: black;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<img id="logo" src="C:/Users/youss/OneDrive/Desktop/WEB1/445.png" alt="logo">
+<div id="back-arrow" onclick="goBack()">&#8592;</div>
+
+<div id="content">
+    <h1>تعديل معلوماتي</h1>
+    <div id="error-message"></div>
+    <div id="success-message"></div>
+    <form id="infoForm" onsubmit="return updateUserInfo()">
+        <input type="text" id="name" placeholder="الاسم" oninput="checkChanges()">
+        <input type="email" id="email" placeholder="البريد الإلكتروني" oninput="checkChanges()">
+        <input type="tel" id="phone" placeholder="رقم الهاتف" oninput="checkChanges()">
+        <input type="text" id="address" placeholder="العنوان" oninput="checkChanges()">
+        <select id="governorate" onchange="checkChanges()">
+            <option value="" disabled selected>اختر المحافظة</option>
+            <option value="القاهرة">القاهرة</option>
+            <option value="الجيزة">الجيزة</option>
+            <!-- إضافة المزيد من المحافظات هنا -->
+        </select>
+        <button type="submit" class="btn-primary" id="updateButton" disabled>تحديث المعلومات</button>
+    </form>
+    <button onclick="openPasswordModal()" class="btn-primary enabled">تعديل كلمة المرور</button>
+    <button onclick="openDeleteAccountModal()" class="btn-secondary">احذف حسابي</button>
+</div>
+
+<!-- نافذة تعديل كلمة المرور -->
+<div id="passwordModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closePasswordModal()">&times;</span>
+        <h2>تعديل كلمة المرور</h2>
+        <input type="password" id="currentPassword" placeholder="كلمة المرور الحالية">
+        <input type="password" id="newPassword" placeholder="كلمة المرور الجديدة">
+        <button onclick="changePassword()" class="btn-primary enabled">تحديث كلمة المرور</button>
+        <div id="password-error-message" style="color: red; margin-top: 10px;"></div>
+        <div id="password-success-message" style="color: green; margin-top: 10px;"></div>
+    </div>
+</div>
+
+<!-- نافذة حذف الحساب -->
+<div id="deleteAccountModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeDeleteAccountModal()">&times;</span>
+        <h2>حذف الحساب</h2>
+        <p>هل أنت متأكد من أنك تريد حذف حسابك؟ هذا الإجراء لا يمكن التراجع عنه.</p>
+        <button onclick="deleteAccountConfirm()" class="btn-secondary">تأكيد الحذف</button>
+        <button onclick="closeDeleteAccountModal()" class="btn-primary enabled">إلغاء</button>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.location.href = 'page4.html';
+    }
+
+    // استرجاع بيانات المستخدم من التخزين المحلي وعرضها في الحقول
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentUser = localStorage.getItem('currentUser');
+        if (currentUser) {
+            var parsedData = JSON.parse(currentUser);
+            document.getElementById('name').value = parsedData.name || '';
+            document.getElementById('email').value = parsedData.emailPhone || '';
+            document.getElementById('phone').value = parsedData.phone || '';
+            document.getElementById('address').value = parsedData.address || '';
+            document.getElementById('governorate').value = parsedData.governorate || '';
+        }
+    });
+
+    function checkChanges() {
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var phone = document.getElementById('phone').value;
+        var address = document.getElementById('address').value;
+        var governorate = document.getElementById('governorate').value;
+        var updateButton = document.getElementById('updateButton');
+
+        if (name !== currentUser.name || email !== currentUser.emailPhone || phone !== currentUser.phone || address !== currentUser.address || governorate !== currentUser.governorate) {
+            updateButton.classList.add('enabled');
+            updateButton.removeAttribute('disabled');
+        } else {
+            updateButton.classList.remove('enabled');
+            updateButton.setAttribute('disabled', 'true');
+        }
+    }
+
+    function updateUserInfo() {
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var phone = document.getElementById('phone').value;
+        var address = document.getElementById('address').value;
+        var governorate = document.getElementById('governorate').value;
+        var errorMessage = document.getElementById('error-message');
+        var successMessage = document.getElementById('success-message');
+
+        // التحقق من صحة البيانات المدخلة
+        if (!name || (!email && !phone) || !address || !governorate) {
+            errorMessage.innerText = 'الرجاء ملء جميع الحقول المطلوبة';
+            return false;
+        }
+
+        // استرجاع جميع المستخدمين من التخزين المحلي
+        var storedUsers = JSON.parse(localStorage.getItem('userData')) || [];
+        var currentUserEmail = JSON.parse(localStorage.getItem('currentUser')).emailPhone;
+
+        // إيجاد المستخدم الحالي في التخزين المحلي وتحديث بياناته
+        var currentUserIndex = storedUsers.findIndex(function(user) {
+            return user.emailPhone === currentUserEmail;
+        });
+
+        if (currentUserIndex !== -1) {
+            storedUsers[currentUserIndex] = {
+                name: name,
+                emailPhone: email || storedUsers[currentUserIndex].emailPhone,
+                phone: phone || storedUsers[currentUserIndex].phone,
+                address: address,
+                governorate: governorate
+            };
+
+            // تحديث بيانات المستخدم في التخزين المحلي
+            localStorage.setItem('userData', JSON.stringify(storedUsers));
+
+            // تحديث بيانات المستخدم الحالي في التخزين المحلي
+            localStorage.setItem('currentUser', JSON.stringify(storedUsers[currentUserIndex]));
+
+            successMessage.innerText = 'تم تحديث المعلومات بنجاح!';
+            setTimeout(function() {
+                successMessage.innerText = '';
+            }, 5000);
+        } else {
+            errorMessage.innerText = 'حدث خطأ أثناء تحديث المعلومات';
+            setTimeout(function() {
+                errorMessage.innerText = '';
+            }, 5000);
+        }
+
+        return false; // منع إعادة تحميل الصفحة
+    }
+
+    function openPasswordModal() {
+        document.getElementById('passwordModal').style.display = 'block';
+    }
+
+    function closePasswordModal() {
+        document.getElementById('passwordModal').style.display = 'none';
+    }
+
+    function changePassword() {
+        var currentPassword = document.getElementById('currentPassword').value;
+        var newPassword = document.getElementById('newPassword').value;
+        var passwordErrorMessage = document.getElementById('password-error-message');
+        var passwordSuccessMessage = document.getElementById('password-success-message');
+
+        var storedUsers = JSON.parse(localStorage.getItem('userData')) || [];
+        var currentUserEmail = JSON.parse(localStorage.getItem('currentUser')).emailPhone;
+
+        // إيجاد المستخدم الحالي في التخزين المحلي
+        var currentUserIndex = storedUsers.findIndex(function(user) {
+            return user.emailPhone === currentUserEmail;
+        });
+
+        if (currentUserIndex !== -1) {
+            var currentUser = storedUsers[currentUserIndex];
+
+            // التحقق من كلمة المرور الحالية
+            if (currentUser.password !== currentPassword) {
+                passwordErrorMessage.innerText = 'كلمة المرور الحالية غير صحيحة';
+                return;
+            }
+
+            // تحديث كلمة المرور
+            currentUser.password = newPassword;
+
+            // تحديث بيانات المستخدم في التخزين المحلي
+            storedUsers[currentUserIndex] = currentUser;
+            localStorage.setItem('userData', JSON.stringify(storedUsers));
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            passwordSuccessMessage.innerText = 'تم تحديث كلمة المرور بنجاح!';
+            setTimeout(function() {
+                closePasswordModal();
+                passwordSuccessMessage.innerText = '';
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('newPassword').value = '';
+            }, 5000);
+        } else {
+            passwordErrorMessage.innerText = 'حدث خطأ أثناء تحديث كلمة المرور';
+        }
+    }
+
+    function openDeleteAccountModal() {
+        document.getElementById('deleteAccountModal').style.display = 'block';
+    }
+
+    function closeDeleteAccountModal() {
+        document.getElementById('deleteAccountModal').style.display = 'none';
+    }
+
+    function deleteAccountConfirm() {
+        var storedUsers = JSON.parse(localStorage.getItem('userData')) || [];
+        var currentUserEmail = JSON.parse(localStorage.getItem('currentUser')).emailPhone;
+
+        // حذف المستخدم الحالي من التخزين المحلي
+        var updatedUsers = storedUsers.filter(function(user) {
+            return user.emailPhone !== currentUserEmail;
+        });
+
+        // تحديث التخزين المحلي
+        localStorage.setItem('userData', JSON.stringify(updatedUsers));
+        localStorage.removeItem('currentUser');
+
+        closeDeleteAccountModal();
+        alert('تم حذف الحساب بنجاح!');
+        window.location.href = 'page2.html'; // إعادة التوجيه إلى صفحة تسجيل الدخول
+    }
+</script>
+
+</body>
+</html>
