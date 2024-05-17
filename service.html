@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلباتي للصيانة</title>
+    <style>
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            background-color: #3498db;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        #content {
+            background-color: white;
+            color: black;
+            padding: 40px;
+            border-radius: 10px;
+            width: 800px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            animation: slideDown 0.5s ease-in-out;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        #no-requests {
+            color: red;
+        }
+
+        #instructions {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #eef;
+            border-radius: 10px;
+            width: 800px;
+            color: black;
+        }
+
+        #logo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 100px;
+            height: auto;
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 18px;
+            color: white;
+            background-color: red;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .back-arrow:hover {
+            background-color: darkred;
+        }
+
+        .back-arrow::before {
+            content: "←";
+            margin-right: 5px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<a href="page4.html" class="back-arrow">العودة</a>
+
+<img id="logo" src="C:/Users/youss/OneDrive/Desktop/WEB1/445.png" alt="logo">
+
+<div id="content">
+    <h1>طلباتي للصيانة</h1>
+    <table id="requestsTable">
+        <thead>
+            <tr>
+                <th>رقم الطلب</th>
+                <th>موديل الجهاز</th>
+                <th>نوع العطل</th>
+                <th>تفاصيل العطل</th>
+                <th>تاريخ الطلب</th>
+                <th>حالة الطلب</th>
+                <th>الموعد</th>
+            </tr>
+        </thead>
+        <tbody id="requestsBody">
+            <!-- سيتم إدراج الطلبات هنا -->
+        </tbody>
+    </table>
+    <p id="no-requests">لا توجد طلبات صيانة مسجلة</p>
+</div>
+
+<div id="instructions">
+    <h2>إرشادات:</h2>
+    <ul>
+        <li>يرجى التأكد من إدخال جميع تفاصيل العطل بدقة.</li>
+        <li>يمكنك تحديد موعد مناسب لزيارة فريق الصيانة.</li>
+        <li>تأكد من تحديث بيانات الاتصال الخاصة بك لضمان الوصول السريع.</li>
+        <li>يمكنك إلغاء أي طلب بالتواصل معنا على 01101205514.</li>
+    </ul>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        var allRequests = JSON.parse(localStorage.getItem('serviceRequests')) || [];
+        var userRequests = allRequests.filter(request => request.emailPhone === currentUser.emailPhone);
+
+        var requestsBody = document.getElementById('requestsBody');
+        var noRequestsMessage = document.getElementById('no-requests');
+
+        function format12HourTime(time) {
+            var [date, timePart] = time.split('T');
+            var [hour, minute] = timePart.split(':');
+            var suffix = hour >= 12 ? 'م' : 'ص';
+            hour = hour % 12 || 12; // Convert to 12-hour format
+            return `${date} ${hour}:${minute} ${suffix}`;
+        }
+
+        if (userRequests.length > 0) {
+            noRequestsMessage.style.display = 'none';
+            userRequests.forEach(function(request, index) {
+                var appointment = request.appointment ? format12HourTime(request.appointment.time) : 'لم يتم التحديد';
+                var row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${request.deviceModel}</td>
+                    <td>${request.issueType}</td>
+                    <td>${request.issueDescription}</td>
+                    <td>${request.date}</td>
+                    <td>${request.status}</td>
+                    <td>${appointment}</td>
+                `;
+                requestsBody.appendChild(row);
+            });
+        } else {
+            noRequestsMessage.style.display = 'block';
+        }
+    });
+</script>
+
+</body>
+</html>

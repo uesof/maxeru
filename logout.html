@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الخروج</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        #message {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div id="message">
+    <h1>تم تسجيل الخروج بنجاح</h1>
+    <p>سيتم إعادة توجيهك إلى صفحة تسجيل الدخول بعد 5 ثوانٍ...</p>
+</div>
+
+<script>
+    // إزالة بيانات المستخدم من التخزين المحلي
+    localStorage.removeItem('currentUser');
+
+    // إعادة توجيه المستخدم إلى صفحة تسجيل الدخول بعد 5 ثوانٍ
+    setTimeout(function() {
+        window.location.href = 'page2.html';
+    }, 5000);
+</script>
+
+</body>
+</html>

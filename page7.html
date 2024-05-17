@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلب صيانة كمبيوتر</title>
+    <style>
+        body {
+            background-color: #3498db;
+            margin: 0;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+        #logo {
+            width: 200px;
+            height: auto;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #welcome-message {
+            font-size: 24px;
+            margin-right: 20px;
+        }
+        #user-name {
+            margin-right: 20px;
+        }
+        #white-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        .request-button {
+            background-color: red;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .request-button:hover {
+            background-color: darkred;
+        }
+        input[type="text"],
+        textarea {
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            width: calc(100% - 20px);
+        }
+        select {
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            width: calc(100% - 20px);
+        }
+        input[type="file"] {
+            margin-top: 10px;
+        }
+        .file-description {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<a href="page1.html"><img id="logo" src="C:\Users\youss\OneDrive\Desktop\WEB1\445 - Copy.png" alt="445"></a>
+
+<p id="welcome-message">مرحبًا، <span id="user-name"></span>! أهلاً بك في حسابك</p>
+
+<div id="white-box">
+    <h2 style="color: black;">طلب صيانة كمبيوتر</h2>
+    <p style="color: black;">يرجى ملء النموذج أدناه لتقديم طلب صيانة لجهاز كمبيوتر الخاص بك.</p>
+    <!-- نموذج طلب الصيانة هنا -->
+    <form id="maintenance-form">
+        <input type="text" name="device-model" placeholder="موديل الجهاز أو نوعه">
+        <br>
+        <select name="issue-type">
+            <option value="" disabled selected>نوع العطل (داخلي أو بالنظام)</option>
+            <option value="internal">داخلي</option>
+            <option value="system">بالنظام</option>
+        </select>
+        <br>
+        <textarea name="issue-description" placeholder="شرح مشكلتك"></textarea>
+        <br>
+        <input type="file" name="image-upload" accept="image/*">
+        <span class="file-description">رفع صورة (اختياري)</span>
+        <br>
+        <input type="file" name="video-upload" accept="video/*">
+        <span class="file-description">رفع فيديو (اختياري)</span>
+        <br>
+        <input type="file" name="audio-upload" accept="audio/*">
+        <span class="file-description">رفع ملف صوتي (اختياري)</span>
+        <br>
+        <button type="submit" class="request-button">تقديم الطلب</button>
+    </form>
+</div>
+
+<script>
+    // استرجاع اسم المستخدم من التخزين المحلي وعرضه في الصفحة
+    var currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+        var parsedData = JSON.parse(currentUser);
+        var userName = parsedData.name;
+        document.getElementById('user-name').innerText = userName;
+    }
+
+    // التوجيه إلى صفحة تأكيد الطلب عند الضغط على زر "تقديم الطلب"
+    document.getElementById('maintenance-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // منع تحميل الصفحة الجديدة
+
+        var formData = {
+            'emailPhone': parsedData.emailPhone,
+            'deviceModel': document.getElementsByName('device-model')[0].value,
+            'issueType': document.getElementsByName('issue-type')[0].value,
+            'issueDescription': document.getElementsByName('issue-description')[0].value,
+            'date': new Date().toLocaleString(),
+            'status': 'معلق'
+        };
+
+        var modelName = formData.deviceModel;
+        var issueType = formData.issueType;
+        var issueDescription = formData.issueDescription;
+
+        if (modelName === '' || issueType === '' || issueDescription === '') {
+            alert('يرجى ملء جميع الحقول المطلوبة قبل تقديم الطلب.');
+        } else {
+            // حفظ البيانات في local storage
+            var serviceRequests = JSON.parse(localStorage.getItem('serviceRequests')) || [];
+            serviceRequests.push(formData);
+            localStorage.setItem('serviceRequests', JSON.stringify(serviceRequests));
+
+            window.location.href = 'page8.html'; // اسم الصفحة التي تحتوي على تأكيد الطلب
+        }
+    });
+</script>
+
+</body>
+</html>

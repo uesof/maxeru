@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كيف نتعامل معك؟</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #3498db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Cairo', sans-serif;
+            color: #ffffff;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .content {
+            text-align: center;
+            animation: fadeIn 2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 2.5em;
+            animation: fadeIn 2s ease;
+            color: #ffeb3b;
+            margin-bottom: 16px;
+        }
+
+        p {
+            font-size: 1.2em;
+            font-family: 'Cairo', sans-serif;
+            animation: fadeIn 2s ease;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .step img {
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #ffffff;
+            margin: 0 10px;
+        }
+
+        .back-button {
+            font-size: 1.5em;
+            color: white;
+            background-color: red;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            animation: fadeIn 2s ease;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background-color: darkred;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>كيف نتعامل معك؟</h1>
+        <div class="step">
+            <img src="step1.png" alt="طلب العميل">
+            <p>بعد ارسال طلبك ، يتم التواصل معك لتحديد موعد المعاينة.</p>
+        </div>
+        <div class="arrow">⬇️</div>
+        <div class="step">
+            <img src="step2.png" alt="المعاينة">
+            <p>المعاينة مجانية، وبعدها سيتم تحديد تكلفة الصيانة.</p>
+        </div>
+        <div class="arrow">⬇️</div>
+        <div class="step">
+            <img src="step3.webp" alt="تحديد التكلفة">
+            <p>إذا رغبت في صيانة جهازك و احتاج لقطع غيار، سنوفرها لك بأسعار تنافسية.</p>
+        </div>
+        <button class="back-button" onclick="window.location.href='page1.html'">العودة إلى الصفحة الرئيسية</button>
+    </div>
+</body>
+</html>

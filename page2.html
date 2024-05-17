@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <style>
+        body {
+            background-color: #3498db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        .content {
+            text-align: center;
+            color: white;
+        }
+        #logo {
+            margin-bottom: 50px;
+            width: 200px;
+            height: auto;
+            cursor: pointer;
+        }
+        input[type="text"],
+        input[type="password"] {
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            margin-bottom: 20px;
+            width: 300px;
+        }
+        button {
+            font-size: 28px;
+            color: white;
+            background-color: red;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+        }
+        button:hover {
+            background-color: darkred;
+        }
+        #error-message {
+            color: red;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .loading-spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<a href="page1.html"><img id="logo" src="C:/Users/youss/OneDrive/Desktop/WEB1/445 - Copy.png" alt="445"></a>
+
+<div class="content">
+    <h1 style="font-size: 40px;">تسجيل الدخول</h1>
+    <form id="loginForm" onsubmit="return validateForm()">
+        <input type="text" name="email_phone" id="email_phone" placeholder="البريد الإلكتروني أو رقم الهاتف">
+        <br>
+        <input type="password" id="password" name="password" placeholder="كلمة المرور">
+        <br>
+        <button type="submit" id="loginButton">تسجيل الدخول
+            <div class="loading-spinner" id="loadingSpinner"></div>
+        </button>
+        <div id="error-message"></div>
+    </form>
+    <p style="margin-top: 20px;">ليس لديك حساب؟ <a href="page3.html">سجل حساب جديد من هنا</a></p>
+</div>
+
+<script>
+    function validateForm() {
+        var emailPhone = document.getElementById('email_phone').value;
+        var password = document.getElementById('password').value;
+        var errorMessage = document.getElementById('error-message');
+        var loadingSpinner = document.getElementById('loadingSpinner');
+        var loginButton = document.getElementById('loginButton');
+
+        var emailPhoneRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        var phoneRegex = /^01\d{9}$/;
+
+        if (!(emailPhone.match(emailPhoneRegex) || emailPhone.match(phoneRegex))) {
+            errorMessage.innerText = 'البريد الإلكتروني أو رقم الهاتف غير صالح';
+            setTimeout(function() {
+                errorMessage.innerText = '';
+            }, 5000); // 5 ثوانٍ
+            return false;
+        }
+
+        if (password.length < 8) {
+            errorMessage.innerText = 'كلمة المرور يجب أن تكون على الأقل 8 أحرف';
+            setTimeout(function() {
+                errorMessage.innerText = '';
+            }, 5000); // 5 ثوانٍ
+            return false;
+        }
+
+        // عرض تأثير التحميل وتغيير لون الزر
+        loadingSpinner.style.display = 'block';
+        loginButton.style.backgroundColor = 'green';
+
+        // التحقق من بيانات الاعتماد باستخدام التخزين المحلي
+        setTimeout(function() {
+            var storedUsers = JSON.parse(localStorage.getItem('userData')) || [];
+            var userExists = storedUsers.some(function(user) {
+                return user.emailPhone === emailPhone && user.password === password;
+            });
+
+            loadingSpinner.style.display = 'none';
+            loginButton.style.backgroundColor = 'red';
+
+            if (!userExists) {
+                errorMessage.innerText = 'البريد الإلكتروني أو رقم الهاتف أو كلمة المرور غير صحيحة';
+                setTimeout(function() {
+                    errorMessage.innerText = '';
+                }, 5000); // 5 ثوانٍ
+                return false;
+            }
+
+            // حفظ بيانات المستخدم في التخزين المحلي
+            var currentUser = storedUsers.find(function(user) {
+                return user.emailPhone === emailPhone;
+            });
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            // توجيه المستخدم إلى الصفحة المطلوبة بعد تسجيل الدخول بنجاح
+            window.location.href = 'page4.html';
+        }, 2000); // محاكاة التأخير لمدة 2 ثانية
+
+        return false;
+    }
+</script>
+
+</body>
+</html>

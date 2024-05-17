@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تأكيد حجز الزيارة</title>
+    <style>
+        body {
+            background-color: #3498db;
+            margin: 0;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+        #logo {
+            width: 200px;
+            height: auto;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #welcome-message {
+            font-size: 24px;
+            margin-right: 20px;
+        }
+        #user-name {
+            margin-right: 20px;
+        }
+        #white-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        .success-message {
+            color: green;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        /* ستايل السهم */
+        .back-arrow {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #27ae60;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<a href="page1.html"><img id="logo" src="C:\Users\youss\OneDrive\Desktop\WEB1\445 - Copy.png" alt="445"></a>
+
+<p id="welcome-message">مرحبًا، <span id="user-name"></span>! حجز زيارتك بنجاح</p>
+
+<div id="white-box">
+    <h2 style="color: green;">تأكيد حجز الزيارة</h2>
+    <p class="success-message" style="color: green;">تم حجز زيارتك بنجاح</p>
+    <p style="color: green;">يرجى ملاحظة أن المعاينة مجانية، وسيتم تحديد التكلفة بعد الفحص خلال الزيارة.</p>
+    <p style="color: green;">شكرًا لاختياركم خدماتنا، ونحن في انتظاركم في الموعد المحدد.</p>
+
+    <!-- عرض البيانات المحفوظة في local storage -->
+    <div id="saved-data">
+        <h3 style="color: green;">موعد الزياره القادمه لك :</h3>
+        <p id="saved-user-data" style="color: green;"></p>
+        <p id="saved-appointment-data" style="color: green;"></p>
+    </div>
+
+    <!-- زر العودة إلى الصفحة الرئيسية -->
+    <a href="page1.html" class="back-arrow">&#9664; العودة إلى الصفحة الرئيسية</a>
+</div>
+
+<script>
+     // استرجاع اسم المستخدم من التخزين المحلي وعرضه في الصفحة
+    var currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+        var parsedData = JSON.parse(currentUser);
+        var userName = parsedData.name;
+        document.getElementById('user-name').innerText = userName;
+    }
+
+
+    // استرجاع بيانات الحجز من التخزين المحلي وعرضها في الصفحة
+    var appointmentData = localStorage.getItem('appointmentData');
+    if (appointmentData) {
+        var parsedAppointmentData = JSON.parse(appointmentData);
+        var appointmentTime = new Date(parsedAppointmentData.time);
+        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+        var formattedTime = appointmentTime.toLocaleDateString('ar-EG', options);
+        document.getElementById('saved-appointment-data').innerHTML = '<strong>تاريخ الزيارة:</strong> ' + formattedTime;
+    }
+
+    // استرجاع جميع البيانات من التخزين المحلي
+    var allData = {
+        userData: localStorage.getItem('userData'),
+        appointmentData: localStorage.getItem('appointmentData')
+    };
+
+    // إرسال البيانات إلى الخادم الخاص بالشركة
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://example.com/save-data", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                console.log("تم إرسال البيانات بنجاح");
+            } else {
+                console.error("حدث خطأ أثناء إرسال البيانات");
+            }
+        }
+    };
+
+    xhr.send(JSON.stringify(allData));
+</script>
+
+</body>
+</html>

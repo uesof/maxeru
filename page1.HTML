@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAXERU لخدمات الكمبيوتر</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes backgroundAnimation {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        body {
+            background: linear-gradient(270deg, #3498db, #2ecc71, #9b59b6);
+            background-size: 600% 600%;
+            animation: backgroundAnimation 10s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Cairo', sans-serif;
+            color: #ffffff;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-bottom: 2px solid white;
+        }
+
+        #logo {
+            width: 120px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            background-color: #3498db;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .header-link:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .gray-link {
+            background-color: gray;
+        }
+
+        .gray-link:hover {
+            background-color: darkgray;
+        }
+
+        .content {
+            text-align: center;
+            animation: fadeIn 2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 640px;
+        }
+
+        .video-container {
+            position: relative;
+            border: 8px solid #fff;
+            box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 448px;
+            margin-bottom: 16px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 252px;
+        }
+
+        p {
+            font-size: 1.2em;
+            font-family: 'Cairo', sans-serif;
+            animation: fadeIn 2s ease;
+            color: #ffeb3b;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 2.5em;
+            animation: fadeIn 2s ease;
+            color: #ffeb3b;
+            margin-bottom: 16px;
+        }
+
+        button {
+            font-size: 1.5em;
+            color: white;
+            background-color: red;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            animation: fadeIn 2s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+        }
+
+        button:hover {
+            background-color: darkred;
+            transform: translateY(-2px);
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .full-screen-loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .full-screen-loader .spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .social-links {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: scale(1.1);
+        }
+
+        .facebook-link {
+            background-color: #3b5998;
+        }
+
+        .facebook-link:hover {
+            background-color: #2d4373;
+        }
+
+        .youtube-link {
+            background-color: #FF0000;
+        }
+
+        .youtube-link:hover {
+            background-color: #CC0000;
+        }
+
+        .whatsapp-link {
+            background-color: #25D366;
+        }
+
+        .whatsapp-link:hover {
+            background-color: #128C7E;
+        }
+
+        .chat-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-button:hover {
+            background-color: #2980b9;
+        }
+
+        .chat-container {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 10000;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .chat-messages {
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+
+        .chat-input input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 0;
+        }
+
+        .chat-input button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f1f1f1;
+        }
+
+        .chat-message.bot {
+            background-color: #e1e1e1;
+        }
+
+        .chat-message.user {
+            background-color: #3498db;
+            color: white;
+            text-align: right;
+        }
+
+        .chat-options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .chat-option {
+            background-color: #3498db;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .chat-option:hover {
+            background-color: #2980b9;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .social-link img {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <img id="logo" src="445.png" alt="445">
+    <div class="header-links">
+        <a class="header-link" href="page10.HTML">ازاي اطلب صيانه؟</a>
+        <a class="header-link gray-link" href="page11.HTML">كيف نتعامل معك؟</a>
+    </div>
+</div>
+<div class="content">
+    <div class="video-container">
+        <iframe id="youtubeVideo" src="https://www.youtube.com/embed/pks2QIFO8Ak?controls=0&mute=1&loop=1&autoplay=1&playlist=pks2QIFO8Ak" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+    <h1>اهلا و سهلا</h1>
+    <p>مستني ايه! بنقدم ليك خدمة صيانة للكمبيوتر الخاص بيك من عندك في البيت، هتوفر وقتك وجهدك. اطلب زيارة الآن</p>
+    <button onclick="startService()" id="startButton">ابدأ
+        <div class="loading-spinner" id="loadingSpinner"></div>
+    </button>
+</div>
+
+<div class="social-links">
+    <div class="social-link facebook-link" onclick="window.location.href='https://www.facebook.com/maxerufb'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
+    </div>
+    <div class="social-link youtube-link" onclick="window.location.href='https://www.youtube.com/watch?v=pks2QIFO8Ak'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
+    </div>
+    <div class="social-link whatsapp-link" onclick="window.location.href='https://wa.me/+201101205514'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+    </div>
+    <button class="chat-button" onclick="toggleChat()">💬</button>
+</div>
+
+<div class="chat-container" id="chatContainer">
+    <div class="chat-header">الدردشة مع البوت</div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا...">
+        <button onclick="sendMessage()">إرسال</button>
+    </div>
+</div>
+
+<div class="full-screen-loader" id="fullScreenLoader">
+    <div class="spinner"></div>
+</div>
+
+<script>
+    function startService() {
+        var fullScreenLoader = document.getElementById('fullScreenLoader');
+        fullScreenLoader.style.display = 'flex';
+
+        setTimeout(function() {
+            window.location.href = 'page2.html';
+        }, 5000);
+    }
+
+    function toggleChat() {
+        var chatContainer = document.getElementById('chatContainer');
+        var chatMessages = document.getElementById('chatMessages');
+        chatContainer.style.display = chatContainer.style.display === 'none' || chatContainer.style.display === '' ? 'flex' : 'none';
+        
+        if (chatContainer.style.display === 'flex' && chatMessages.children.length === 0) {
+            sendWelcomeMessage();
+        }
+    }
+
+    function sendWelcomeMessage() {
+        var chatMessages = document.getElementById('chatMessages');
+        var welcomeMessage = document.createElement('div');
+        welcomeMessage.classList.add('chat-message', 'bot');
+        welcomeMessage.textContent = "مرحبًا! كيف يمكنني مساعدتك؟ إليك بعض الخيارات:";
+        chatMessages.appendChild(welcomeMessage);
+
+        var options = [
+            "ما هي خدماتكم؟",
+            "كيف أطلب الصيانة؟",
+            "ما هي ساعات العمل؟",
+            "أين موقعكم؟",
+            "كيف يمكنني التواصل معكم؟",
+            "هل تقدمون خدمات في المنزل؟",
+            "ما هي تكاليف الخدمة؟",
+            "هل تقدمون ضمان؟",
+            "هل هناك عروض خاصة؟",
+            "ما هي طرق الدفع المتاحة؟",
+            "هل يمكنني إلغاء الطلب؟",
+            "هل لديكم فروع أخرى؟",
+            "ماذا أفعل إذا واجهت مشكلة؟",
+            "هل تقدمون خدمات للشركات؟"
+        ];
+        var optionsContainer = document.createElement('div');
+        optionsContainer.classList.add('chat-options');
+        options.forEach(function(option) {
+            var optionElement = document.createElement('div');
+            optionElement.classList.add('chat-option');
+            optionElement.textContent = option;
+            optionElement.onclick = function() {
+                if (option === "ما هي طرق الدفع المتاحة؟") {
+                    window.location.href = "PAYMENT.html";
+                } else {
+                    sendMessage(option);
+                }
+            };
+            optionsContainer.appendChild(optionElement);
+        });
+        chatMessages.appendChild(optionsContainer);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function sendMessage(inputMessage) {
+        var chatInput = document.getElementById('chatInput');
+        var chatMessages = document.getElementById('chatMessages');
+        var userMessage = inputMessage || chatInput.value;
+
+        if (userMessage.trim() === '') return;
+
+        var userMessageElement = document.createElement('div');
+        userMessageElement.classList.add('chat-message', 'user');
+        userMessageElement.textContent = userMessage;
+        chatMessages.appendChild(userMessageElement);
+
+        chatInput.value = '';
+
+        setTimeout(function() {
+            var botResponse = getBotResponse(userMessage);
+            var botMessageElement = document.createElement('div');
+            botMessageElement.classList.add('chat-message', 'bot');
+            botMessageElement.textContent = botResponse;
+            chatMessages.appendChild(botMessageElement);
+
+            // إعادة عرض الخيارات بعد كل رد
+            var options = [
+                "ما هي خدماتكم؟",
+                "كيف أطلب الصيانة؟",
+                "ما هي ساعات العمل؟",
+                "أين موقعكم؟",
+                "كيف يمكنني التواصل معكم؟",
+                "هل تقدمون خدمات في المنزل؟",
+                "ما هي تكاليف الخدمة؟",
+                "هل تقدمون ضمان؟",
+                "هل هناك عروض خاصة؟",
+                "ما هي طرق الدفع المتاحة؟",
+                "هل يمكنني إلغاء الطلب؟",
+                "هل لديكم فروع أخرى؟",
+                "ماذا أفعل إذا واجهت مشكلة؟",
+                "هل تقدمون خدمات للشركات؟"
+            ];
+            var optionsContainer = document.createElement('div');
+            optionsContainer.classList.add('chat-options');
+            options.forEach(function(option) {
+                var optionElement = document.createElement('div');
+                optionElement.classList.add('chat-option');
+                optionElement.textContent = option;
+                optionElement.onclick = function() {
+                    if (option === "ما هي طرق الدفع المتاحة؟") {
+                        window.location.href = "PAYMENT.html";
+                    } else {
+                        sendMessage(option);
+                    }
+                };
+                optionsContainer.appendChild(optionElement);
+            });
+            chatMessages.appendChild(optionsContainer);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000);
+    }
+
+    function getBotResponse(message) {
+        var responses = {
+            "مرحبا": "أهلا! كيف يمكنني مساعدتك اليوم؟",
+            "اهلا": "أهلا بك! كيف يمكنني مساعدتك اليوم؟",
+            "ازاي اطلب": "يمكنك طلب الخدمة عن طريق الضغط على زر 'ابدأ' في الصفحة الرئيسية.",
+            "خدمة العملاء": "أهلا! حاليا للاسف لا يوجد خدمة عملاء اثناء الشات و لكن يمكنك الاتصال على 01101205514.",
+            "ما هي خدماتكم؟": "نحن نقدم خدمات صيانة الكمبيوتر والدعم الفني.",
+            "كيف أطلب الصيانة؟": "يمكنك طلب الصيانة عن طريق الضغط على زر 'ابدأ' في الصفحة الرئيسية.",
+            "ما هي ساعات العمل؟": "ساعات عملنا من السبت إلى الخميس من الساعة 9 صباحاً حتى 6 مساءً.",
+            "اين موقعكم؟": "نحن موجودون في شارع التكنولوجيا، مدينة القاهرة.",
+            "كيف يمكنني التواصل معكم؟": "يمكنك التواصل معنا عبر الهاتف أو الواتساب على الرقم 01101205514.",
+            "هل تقدمون خدمات في المنزل؟": "نعم، نحن نقدم خدمات الصيانة في المنزل. يمكنك طلب الصيانة عبر الموقع.",
+            "ما هي تكاليف الخدمة؟": "تكاليف الخدمة تعتمد على نوع الصيانة المطلوبة. يمكنك الاطلاع على الأسعار عبر موقعنا.",
+            "هل تقدمون ضمان؟": "نعم، نحن نقدم ضمان لمدة 3 أشهر على جميع خدمات الصيانة.",
+            "هل هناك عروض خاصة؟": "نعم، نحن نقدم عروض خاصة بشكل دوري. تابع موقعنا أو صفحتنا على الفيسبوك للحصول على أحدث العروض.",
+            "ما هي طرق الدفع المتاحة؟": "نحن نقبل الدفع النقدي وبطاقات الائتمان والدفع عبر الإنترنت.",
+            "هل يمكنني إلغاء الطلب؟": "نعم، يمكنك إلغاء الطلب قبل 24 ساعة من موعد الصيانة المحدد.",
+            "هل لديكم فروع أخرى؟": "حالياً لدينا فرع واحد في مدينة القاهرة. نسعى لفتح فروع جديدة قريباً.",
+            "ماذا أفعل إذا واجهت مشكلة؟": "يمكنك الاتصال بخدمة العملاء على الرقم 01101205514 للحصول على المساعدة.",
+            "شكرا": "عفوا! أنا هنا للمساعدة دائماً.",
+            "إلى اللقاء": "إلى اللقاء! نتمنى لك يوماً سعيداً.",
+            "متى يمكنني الحجز؟": "يمكنك الحجز في أي وقت من خلال الموقع الإلكتروني. فريقنا سيكون متاحاً خلال ساعات العمل لتلبية طلباتك.",
+            "هل تقدمون خدمات للشركات؟": "نعم، نحن نقدم خدمات صيانة ودعم فني للشركات أيضاً."
+        };
+
+        var keywords = {
+            "خدمه": "نحن نقدم خدمات صيانة الكمبيوتر والدعم الفني.",
+            "عملاء": "يمكنك التواصل معنا عبر الهاتف أو الواتساب على الرقم 01101205514.",
+            "صيانة": "يمكنك طلب الصيانة عن طريق الضغط على زر 'ابدأ' في الصفحة الرئيسية.",
+            "موقع": "نحن موجودون في شارع التكنولوجيا، مدينة القاهرة.",
+            "اتصل": "يمكنك الاتصال بخدمة العملاء على الرقم 01101205514 للحصول على المساعدة.",
+            "سعر": "تكاليف الخدمة تعتمد على نوع الصيانة المطلوبة. يمكنك الاطلاع على الأسعار عبر موقعنا.",
+            "ضمان": "نحن نقدم ضمان لمدة 3 أشهر على جميع خدمات الصيانة.",
+            "عروض": "نعم، نحن نقدم عروض خاصة بشكل دوري. تابع موقعنا أو صفحتنا على الفيسبوك للحصول على أحدث العروض.",
+            "دفع": "نحن نقبل الدفع النقدي وبطاقات الائتمان والدفع عبر الإنترنت.",
+            "إلغاء": "نعم، يمكنك إلغاء الطلب قبل 24 ساعة من موعد الصيانة المحدد.",
+            "حجز": "يمكنك الحجز في أي وقت من خلال الموقع الإلكتروني. فريقنا سيكون متاحاً خلال ساعات العمل لتلبية طلباتك.",
+            "شركة": "نعم، نحن نقدم خدمات صيانة ودعم فني للشركات أيضاً."
+        };
+
+        var lowerMessage = message.toLowerCase();
+        if (responses[lowerMessage]) {
+            return responses[lowerMessage];
+        }
+
+        for (var keyword in keywords) {
+            if (lowerMessage.includes(keyword)) {
+                return keywords[keyword];
+            }
+        }
+
+        return "عذراً، لا أفهم سؤالك. حاول مرة أخرى.";
+    }
+</script>
+
+</body>
+</html>

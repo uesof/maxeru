@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختيار الخدمة</title>
+    <style>
+        body {
+            background-color: #3498db;
+            margin: 0;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+        #logo {
+            width: 200px;
+            height: auto;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #welcome-message {
+            font-size: 24px;
+            margin-right: 20px;
+        }
+        #user-name {
+            margin-right: 20px;
+        }
+        #white-box {
+            background-color: white;
+            padding: 80px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .request-button {
+            background-color: red;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .request-button:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+<a href="page1.html"><img id="logo" src="C:\Users\youss\OneDrive\Desktop\WEB1\445 - Copy.png" alt="445"></a>
+
+<p id="welcome-message">مرحبًا، <span id="user-name"></span>! أهلاً بك في حسابك</p>
+
+<div id="white-box">
+    <h2 style="color: black;">اختيار الخدمة</h2>
+    <p style="color: black;">يرجى اختيار نوع الجهاز الذي ترغب في صيانته.</p>
+    <button class="request-button" id="computer-button">كمبيوتر</button>
+    <button class="request-button" id="laptop-button">لابتوب</button>
+</div>
+
+<script>
+    // استرجاع اسم المستخدم من التخزين المحلي وعرضه في الصفحة
+    var currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+        var parsedData = JSON.parse(currentUser);
+        var userName = parsedData.name;
+        document.getElementById('user-name').innerText = userName;
+    }
+
+    // تخزين نوع الجهاز وتوجيه المستخدم إلى صفحة تعبئة الطلب
+    document.getElementById('computer-button').addEventListener('click', function() {
+        localStorage.setItem('deviceType', 'كمبيوتر');
+        window.location.href = 'page7.html'; // اسم الصفحة الجديدة التي تحتوي على نموذج طلب الصيانة للكمبيوتر
+    });
+
+    document.getElementById('laptop-button').addEventListener('click', function() {
+        localStorage.setItem('deviceType', 'لابتوب');
+        window.location.href = 'page6.html'; // اسم الصفحة الجديدة التي تحتوي على نموذج طلب الصيانة للابتوب
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب جديد</title>
+    <style>
+        body {
+            background-color: #3498db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        .content {
+            text-align: center;
+            color: white;
+        }
+        #logo {
+            margin-bottom: 50px;
+            width: 200px;
+            height: auto;
+            cursor: pointer; /* تحويل المؤشر إلى يد عند التحويل */
+        }
+        input[type="text"],
+        input[type="password"],
+        select {
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            margin-bottom: 20px;
+            width: 300px;
+        }
+        button {
+            font-size: 28px;
+            color: white;
+            background-color: red;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+        }
+        button:hover {
+            background-color: darkred;
+        }
+        button:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+        button.green {
+            background-color: green;
+        }
+        #error-message {
+            color: red;
+            font-size: 18px;
+            margin-top: 10px;
+            display: block;
+            height: auto;
+        }
+        .success-message {
+            color: green;
+            font-size: 18px;
+            margin-top: 10px;
+            display: block;
+            height: auto;
+        }
+        .note {
+            font-size: 14px;
+            color: red;
+            display: block;
+            height: auto;
+        }
+        .loading-spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<a href="page1.html"><img id="logo" src="C:\Users\youss\OneDrive\Desktop\WEB1\445 - Copy.png" alt="445"></a>
+
+<div class="content">
+    <h1 style="font-size: 40px;">إنشاء حساب جديد</h1>
+    <form onsubmit="return validateForm()">
+        <input type="text" name="name" id="name" placeholder="الاسم">
+        <br>
+        <input type="text" name="email_phone" id="email_phone" placeholder="البريد الإلكتروني أو رقم الهاتف المحمول">
+        <br>
+        <input type="password" id="password" name="password" placeholder="كلمة المرور">
+        <br>
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="تأكيد كلمة المرور">
+        <br>
+        <input type="text" name="address" id="address" placeholder="العنوان">
+        <br>
+        <span class="note"><!-- ملاحظة: هذا الحقل ضروري لاستكمال طلبات الصيانة الخاصة بك --></span>
+        <select name="governorate" id="governorate">
+            <option value="" disabled selected>اختر المحافظة</option>
+            <option value="القاهرة">القاهرة</option>
+            <option value="الجيزة">الجيزة</option>
+            <!-- إضافة المزيد من المحافظات هنا -->
+        </select>
+        <br>
+        <button type="submit" id="submit-btn" disabled>إنشاء الحساب
+            <div class="loading-spinner" id="loadingSpinner"></div>
+        </button>
+        <div id="error-message"></div>
+        <div id="success-message"></div>
+    </form>
+    <p style="margin-top: 20px;">هل لديك حساب؟ <a href="page2.html">تسجيل الدخول من هنا</a></p>
+</div>
+
+<script>
+    function validateForm() {
+        var name = document.getElementById('name').value;
+        var nameRegex = /^[\u0600-\u06FF\u0750-\u077Fa-zA-Z]+(?:[\s\u0020]?[\u0600-\u06FF\u0750-\u077Fa-zA-Z]+){0,3}$/; // يقبل الأحرف العربية والإنجليزية فقط مع مسافة واحدة بحد أقصى 3 مسافات
+        var emailPhone = document.getElementById('email_phone').value;
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirm_password').value;
+        var address = document.getElementById('address').value;
+        var governorate = document.getElementById('governorate').value;
+        var errorMessage = document.getElementById('error-message');
+        var loadingSpinner = document.getElementById('loadingSpinner');
+        var submitBtn = document.getElementById('submit-btn');
+        
+        var emailPhoneRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        var phoneRegex = /^01\d{9}$/;
+
+        if (!name.match(nameRegex)) {
+            displayErrorMessage('الرجاء إدخال اسم صحيح');
+            return false;
+        }
+
+        if (!(emailPhone.match(emailPhoneRegex) || emailPhone.match(phoneRegex))) {
+            displayErrorMessage('البريد الإلكتروني أو رقم الهاتف غير صالح');
+            return false;
+        }
+
+        if (password.length < 8) {
+            displayErrorMessage('كلمة المرور يجب أن تكون على الأقل 8 أحرف');
+            return false;
+        }
+
+        if (password === emailPhone) {
+            displayErrorMessage('لا يمكن أن تكون كلمة المرور نفس البريد الإلكتروني أو رقم الهاتف');
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            displayErrorMessage('كلمة المرور غير متطابقة');
+            return false;
+        }
+
+        if (address.trim() === '') {
+            displayErrorMessage('الرجاء إدخال العنوان');
+            return false;
+        }
+
+        if (governorate === '') {
+            displayErrorMessage('الرجاء اختيار المحافظة');
+            return false;
+        }
+        
+        // عرض تأثير التحميل وتغيير لون الزر
+        loadingSpinner.style.display = 'block';
+        submitBtn.style.backgroundColor = 'green';
+        
+        // التحقق من وجود بيانات المستخدم في التخزين المحلي
+        setTimeout(function() {
+            var storedUsers = JSON.parse(localStorage.getItem('userData')) || [];
+            var userExists = storedUsers.some(function(user) {
+                return user.emailPhone === emailPhone;
+            });
+
+            loadingSpinner.style.display = 'none';
+            submitBtn.style.backgroundColor = 'red';
+
+            if (userExists) {
+                displayErrorMessage('تم استخدام البريد الإلكتروني أو رقم الهاتف مسبقًا');
+                return false;
+            }
+
+            // حفظ بيانات المستخدم في التخزين المحلي
+            var newUser = {
+                name: name,
+                emailPhone: emailPhone,
+                password: password,
+                address: address,
+                governorate: governorate
+            };
+            storedUsers.push(newUser);
+            localStorage.setItem('userData', JSON.stringify(storedUsers));
+            
+            displaySuccessMessage('تم إنشاء الحساب بنجاح! شكراً');
+        }, 2000); // محاكاة التأخير لمدة 2 ثانية
+
+        return false; // توقف عن إرسال النموذج
+    }
+
+    function displayErrorMessage(message) {
+        var errorMessage = document.getElementById('error-message');
+        errorMessage.innerText = message;
+        setTimeout(function() {
+            errorMessage.innerText = '';
+        }, 5000);
+    }
+
+    function displaySuccessMessage(message) {
+        var successMessage = document.getElementById('success-message');
+        successMessage.innerText = message;
+        setTimeout(function() {
+            successMessage.innerText = '';
+            // توجيه المستخدم إلى صفحة أخرى بعد عرض رسالة النجاح
+            window.location.href = 'page2.html';
+        }, 5000);
+    }
+
+    // تفعيل زر الإرسال بعد التحقق من صحة البيانات
+    var nameInput = document.getElementById('name');
+    var emailPhoneInput = document.getElementById('email_phone');
+    var passwordInput = document.getElementById('password');
+    var confirmPasswordInput = document.getElementById('confirm_password');
+    var addressInput = document.getElementById('address');
+    var governorateInput = document.getElementById('governorate');
+    var submitBtn = document.getElementById('submit-btn');
+
+    [nameInput, emailPhoneInput, passwordInput, confirmPasswordInput, addressInput, governorateInput].forEach(function(element) {
+        element.addEventListener('input', function() {
+            if (nameInput.value.trim() !== '' && emailPhoneInput.value.trim() !== '' && passwordInput.value.trim() !== '' && confirmPasswordInput.value.trim() !== '' && addressInput.value.trim() !== '' && governorateInput.value.trim() !== '') {
+                submitBtn.disabled = false;
+                submitBtn.classList.add('green');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('green');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
